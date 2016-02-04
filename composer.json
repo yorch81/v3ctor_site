@@ -1,0 +1,22 @@
+{
+    "name": "yorch/v3ctorsite",
+    "description": "V3ctorSite is a website for V3ctor WareHouse",
+    "homepage": "https://github.com/yorch81/v3ctorsite",
+    "type": "project",
+    "license": "Apache-2.0",
+    "authors": [
+        {
+            "name": "Jorge Alberto Ponce Turrubiates",
+            "email": "the.yorch@gmail.com",
+            "homepage": "http://the-yorch.blogspot.mx/"
+        }
+    ],
+    "require": {
+        "php": ">=5.4.0",
+        "slim/slim": "2.*",
+        "yorch/v3wh" : "dev-master",
+        "yorch/v3application" : "dev-master",
+        "monolog/monolog": "1.13.1",
+        "catfan/medoo": "dev-master"
+    }
+}
