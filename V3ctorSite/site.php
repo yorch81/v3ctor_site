@@ -1,4 +1,5 @@
-/*exec("cp create_env createenv");
+<?php 
+exec("cp create_env createenv");
 
 $zip = new ZipArchive;
 $res = $zip->open('file.zip');
@@ -16,6 +17,8 @@ else {
 
 // admin 
 // local
+// v3ctor
+
 if (!file_exists("v3ctorwh"))
 	mkdir("v3ctorwh");
 else
@@ -32,3 +35,15 @@ fwrite($myfile, $txt);
 fclose($myfile);
 
 chmod ("v3ctorwh/newfile.txt", 0750);
+
+//chmod 755
+
+// Create Folder App
+// Create db and user in mongo
+// Create composer.json
+// Create config.php
+// Create index.php
+// Create .htaccess
+// execute composer.phar install
+
+?>
