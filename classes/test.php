@@ -1,12 +1,9 @@
 <?php
 require "V3Site.class.php";
-
-$admin = "root";
-$password = "r00tm0ng0";
-$dir = "/home/yorch/Projects/php/apps/";
+require "../config.php";
 
 $app =  new V3Site($admin, $password, $dir);
 
-$app->makeApp("v3demo");
+$app->makeApp("yorchi");
 
 ?>

@@ -90,6 +90,9 @@ class V3Site
 	 */
 	private function createDir($appName)
 	{
+		if ($this->isReservedWord($appName))
+			return false;
+
 		$appDir = $this->_appDir . $appName;
 
 		if (file_exists($appDir))
@@ -101,6 +104,22 @@ class V3Site
 
 			return true;
 		}
+	}
+
+	/**
+	 * Check if Application Name is Reserved Word
+	 * 
+	 * @param  string $appName Application Name
+	 * @return boolean
+	 */
+	private function isReservedWord($appName)
+	{
+		$reserved = array('admin', 'v3ctor', 'demo', 'yorch');
+
+		if (in_array($appName, $reserved))
+			return true;
+		else
+			return false;
 	}
 
 	/**
