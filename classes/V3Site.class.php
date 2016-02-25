@@ -44,6 +44,13 @@ class V3Site
 	 * @var string
 	 */
 	private $_appDir;
+
+	/**
+	 * Generated Password
+	 * @var [type]
+	 */
+	private $_genPassword;
+
 	/**
 	 * Constructor of class
 	 * 
@@ -134,6 +141,10 @@ class V3Site
 
 		$cfgPhp = fopen($cfgFile, "w") or die("Unable to open config.php file");
 
+		// Generate Password
+		$this->_genPassword = uniqid();
+		$genKey = uniqid("", true); 
+
 		$txt = '<?php' . "\n";
 		fwrite($cfgPhp, $txt);
 
@@ -143,7 +154,7 @@ class V3Site
 		$txt = '$username = "' .  $appName . '";' . "\n";
 		fwrite($cfgPhp, $txt);
 
-		$txt = '$password = "' .  $appName . '";' . "\n";
+		$txt = '$password = "' .  $this->_genPassword . '";' . "\n";
 		fwrite($cfgPhp, $txt);
 
 		$txt = '$dbname = "' .  $appName . '";' . "\n";
@@ -152,7 +163,7 @@ class V3Site
 		$txt = '$port = 27017;' . "\n";
 		fwrite($cfgPhp, $txt);
 
-		$txt = '$key = "lYltuNtYYbYRFC7QWwHn9b5aH2UJMk1234567890";' . "\n";
+		$txt = '$key = "' . $genKey . '";' . "\n";
 		fwrite($cfgPhp, $txt);
 
 		$txt = '?>' . "\n";
@@ -212,7 +223,7 @@ class V3Site
 		$txt = 'use ' .  $appName . ";\n";
 		fwrite($cfgJs, $txt);
 
-		$txt = 'db.addUser("' .  $appName . '","' . $appName . '");' . "\n";
+		$txt = 'db.addUser("' .  $appName . '","' . $this->_genPassword . '");' . "\n";
 		fwrite($cfgJs, $txt);
 
 		fclose($cfgJs);
