@@ -4,6 +4,8 @@ require "../config.php";
 
 $app =  new V3Site($admin, $password, $dir);
 
-$app->makeApp("yorchi");
-
+if ($app->checkAvailability("yorch"))
+	$app->makeApp("yorch");
+else
+	echo "Application Name not Available\n";
 ?>

@@ -47,9 +47,15 @@ class V3Site
 
 	/**
 	 * Generated Password
-	 * @var [type]
+	 * @var string
 	 */
 	private $_genPassword;
+
+	/**
+	 * Reserved Words
+	 * @var array
+	 */
+	private $reserved = array('admin', 'v3ctor', 'demo', 'yorch', 'test');
 
 	/**
 	 * Constructor of class
@@ -90,12 +96,12 @@ class V3Site
 	}
 
 	/**
-	 * Create Directory of Application
+	 * Check availability of Application Name
 	 * 
 	 * @param  string $appName Application Name
 	 * @return boolean
 	 */
-	private function createDir($appName)
+	public function checkAvailability($appName)
 	{
 		if ($this->isReservedWord($appName))
 			return false;
@@ -104,13 +110,29 @@ class V3Site
 
 		if (file_exists($appDir))
 			return false;
-		else{
+		else
+			return true;
+	}
+
+	/**
+	 * Create Directory of Application
+	 * 
+	 * @param  string $appName Application Name
+	 * @return boolean
+	 */
+	private function createDir($appName)
+	{
+		if ($this->checkAvailability($appName)){
+			$appDir = $this->_appDir . $appName;
+			
 			mkdir($appDir);
 
 			chmod($appDir, 0755);
 
 			return true;
 		}
+		else
+			return false;
 	}
 
 	/**
@@ -121,9 +143,7 @@ class V3Site
 	 */
 	private function isReservedWord($appName)
 	{
-		$reserved = array('admin', 'v3ctor', 'demo', 'yorch');
-
-		if (in_array($appName, $reserved))
+		if (in_array($appName, $this->reserved))
 			return true;
 		else
 			return false;
