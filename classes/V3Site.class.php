@@ -55,7 +55,7 @@ class V3Site
 	 * Reserved Words
 	 * @var array
 	 */
-	private $reserved = array('admin', 'v3ctor', 'demo', 'yorch', 'test');
+	private $reserved = array('admin', 'v3ctor', 'demo', 'yorch', 'test', 'mongo', 'mongodb', 'local');
 
 	/**
 	 * Constructor of class
@@ -90,6 +90,10 @@ class V3Site
 			$this->createCfgJsFile($appName);
 			$this->createComposerFile($appName);
 			$this->createHtFile($appName);
+
+			$this->execConfigJs($appName);
+			//$this->execComposer($appName, "install");
+			$this->unzipVendor($appName);
 		}
 
 		return $retValue;
@@ -159,7 +163,7 @@ class V3Site
 		$appDir = $this->_appDir . $appName;
 		$cfgFile = $appDir . "/config.php";
 
-		$cfgPhp = fopen($cfgFile, "w") or die("Unable to open config.php file");
+		$cfgPhp = fopen($cfgFile, "w") or die("Unable to create config.php file");
 
 		// Generate Password
 		$this->_genPassword = uniqid();
@@ -202,7 +206,7 @@ class V3Site
 		$appDir = $this->_appDir . $appName;
 		$indexFile = $appDir . "/index.php";
 
-		$index = fopen($indexFile, "w") or die("Unable to open index.php file");
+		$index = fopen($indexFile, "w") or die("Unable to create index.php file");
 
 		$txt = '<?php' . "\n";
 		fwrite($index, $txt);
@@ -238,7 +242,7 @@ class V3Site
 		$appDir = $this->_appDir . $appName;
 		$cfgFile = $appDir . "/config.js";
 
-		$cfgJs = fopen($cfgFile, "w") or die("Unable to open config.js file");
+		$cfgJs = fopen($cfgFile, "w") or die("Unable to create config.js file");
 
 		$txt = 'use ' .  $appName . ";\n";
 		fwrite($cfgJs, $txt);
@@ -259,7 +263,7 @@ class V3Site
 		$appDir = $this->_appDir . $appName;
 		$compFile = $appDir . "/composer.json";
 
-		$composer = fopen($compFile, "w") or die("Unable to open composer.json file");
+		$composer = fopen($compFile, "w") or die("Unable to create composer.json file");
 
 		$txt = '{"require": {' . "\n";
 		fwrite($composer, $txt);
@@ -295,7 +299,7 @@ class V3Site
 		$appDir = $this->_appDir . $appName;
 		$htFile = $appDir . "/.htaccess";
 
-		$htaccess = fopen($htFile, "w") or die("Unable to open .htaccess file");
+		$htaccess = fopen($htFile, "w") or die("Unable to create .htaccess file");
 
 		$txt = 'RewriteEngine On' . "\n";
 		fwrite($htaccess, $txt);
@@ -310,6 +314,60 @@ class V3Site
 		fwrite($htaccess, $txt);
 
 		fclose($htaccess);
+	}
+
+	/**
+	 * Execute config.js to create database and user
+	 * 
+	 * @param  string $appName Application Name
+	 */
+	private function execConfigJs($appName)
+	{
+		$configJsFile = $this->_appDir . $appName . "/config.js";
+		$command = "mongo -u " . $this->_admin . " -p " . $this->_password . " admin < " . $configJsFile;
+
+		exec($command);
+
+		unlink($configJsFile);
+	}
+
+	/**
+	 * Execute composer.phar to download libraries
+	 * 
+	 * @param  string $appName Application Name
+	 * @param  string $action  Composer Action
+	 */
+	private function execComposer($appName, $action)
+	{
+		$currentPath = getcwd();
+
+		$appDir = $this->_appDir . $appName;
+
+		chdir($appDir);
+
+		exec("composer.phar " . $action);
+
+		chdir($currentPath);
+	}
+
+	/**
+	 * Unzip vendor Directory
+	 * 
+	 * @param  string $appName Application Name
+	 */
+	private function unzipVendor($appName)
+	{
+		$appDir = $this->_appDir . $appName;
+		$zipFile = $this->_appDir . "/vendor.zip";
+
+		$zip = new ZipArchive;
+
+		$result = $zip->open($zipFile);
+
+		if ($result === TRUE) {
+			$zip->extractTo($appDir);
+			$zip->close();
+		}
 	}
 }
 ?>
