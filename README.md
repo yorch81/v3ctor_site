@@ -9,7 +9,6 @@ V3ctor WareHouse Site.
 * [MySQL](https://www.mysql.com/)
 * [Slim Framework](http://www.slimframework.com/)
 * [V3Wh Core](https://github.com/yorch81/v3wh)
-* [V3Wh Application](https://github.com/yorch81/v3application)
 
 ## Developer Documentation ##
 Execute phpDoc.
