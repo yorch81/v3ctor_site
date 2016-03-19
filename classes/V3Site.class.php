@@ -55,7 +55,7 @@ class V3Site
 	 * Reserved Words
 	 * @var array
 	 */
-	private $reserved = array('admin', 'v3ctor', 'demo', 'yorch', 'test', 'mongo', 'mongodb', 'local');
+	private $reserved = array('admin', 'v3ctor', 'yorch', 'mongodb', 'local');
 
 	/**
 	 * Constructor of class
